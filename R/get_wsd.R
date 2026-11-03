@@ -14,8 +14,8 @@
 #'   Ignored when `rapid = TRUE`, which always uses `TRUE`. Default: `TRUE`.
 #' @param fill_empty_coords Logical. Whether to fill in coordinates for sources
 #'   that have no longitude or latitude in the database.
-#'   * `TRUE`: downloads the NPS unit boundaries ([getParkSystem()]) and the US
-#'     state boundaries, so it needs internet and takes longer. Each source
+#'   * `TRUE`: downloads the NPS unit boundaries ([get_park_system()]) and the
+#'     US state boundaries, so it needs internet and takes longer. Each source
 #'     with missing coordinates gets a point inside its park unit. For a unit
 #'     made of separate pieces, the point is in the piece in the source's
 #'     state (or the park's state when `source_state` is empty); if several
@@ -65,7 +65,7 @@
 #'   from the database (`"Source Coordinates"`) or were filled in
 #'   (`"Centroid"`).
 #' @export
-#' @seealso [getParkSystem()], which supplies the park boundaries used to fill
+#' @seealso [get_park_system()], which supplies the park boundaries used to fill
 #'   in coordinates; [wava_data_path()] for the default `path`.
 #' @examplesIf file.exists(wava_data_path("Water_Supply_Systems", "NPS_Water_Systems_Database_Joined.xlsx"))
 #' # Water sources for two parks, as points
@@ -127,10 +127,10 @@ get_wsd <- function(conus = TRUE,
   if (fill_empty_coords) {
     
     # Error checking for dependency
-    if (!exists("getParkSystem")) {
-      warning("Function 'getParkSystem()' not found. Skipping coordinate fill.")
+    if (!exists("get_park_system")) {
+      warning("Function 'get_park_system()' not found. Skipping coordinate fill.")
     } else {
-      parks <- getParkSystem()
+      parks <- get_park_system()
       
       WSD_raw <- WSD_raw %>% 
         dplyr::mutate(coords_flag = ifelse(is.na(source_longitude) | is.na(source_latitude),
@@ -187,7 +187,7 @@ get_wsd <- function(conus = TRUE,
             dplyr::group_by(UNIT_CODE, cluster_id) %>% 
             dplyr::summarize(do_union = TRUE, .groups = "drop") %>% 
             sf::st_cast("MULTIPOLYGON") %>% 
-            # st_transform(st_crs(getParkSystem())) %>%
+            # st_transform(st_crs(get_park_system())) %>%
             dplyr::mutate(cluster_id = as.character(cluster_id)) %>%
             sf::st_join(., tigris::states() %>% sf::st_transform(sf::st_crs(clustered)) %>% dplyr::select(STUSPS), left = TRUE) %>%
             sf::st_point_on_surface() %>%

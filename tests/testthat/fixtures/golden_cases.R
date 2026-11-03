@@ -3,6 +3,8 @@
 #
 # Used by make_golden.R, which writes golden/<id>.rds from the old code, and by
 # test-golden.R, which checks that wavacore returns the identical object.
+# `fun`: the wavacore function. `old_fun`: its name in the old code, if it was
+#   renamed (snake case); make_golden.R calls that one.
 # `args` must work with both the old and the new function, so it can't use
 # arguments added in wavacore (such as get_wsd()'s `path`).
 # `needs`: "data" = the shared WaVA data folder, "internet" = a live download.
@@ -32,23 +34,27 @@ golden_cases <- list(
        args = list(fill_empty_coords = TRUE, conus = FALSE),
        needs = c("data", "internet"),
        downloads = "NPS park boundaries (NPS Data Store) and US state boundaries (tigris)"),
-  list(id = "getParkSystem",
-       fun = "getParkSystem",
+  list(id = "get_park_system",
+       fun = "get_park_system",
+       old_fun = "getParkSystem",
        args = list(),
        needs = "internet",
        downloads = "NPS park boundaries (NPS Data Store)"),
-  list(id = "getParkBoundary_two_parks",
-       fun = "getParkBoundary",
+  list(id = "get_park_boundary_two_parks",
+       fun = "get_park_boundary",
+       old_fun = "getParkBoundary",
        args = list(park = c("ROMO", "ZION")),
        needs = "internet",
        downloads = "NPS park boundaries (NPS Data Store)"),
-  list(id = "getUnitVisitation_api",
-       fun = "getUnitVisitation",
+  list(id = "get_unit_visitation_api",
+       fun = "get_unit_visitation",
+       old_fun = "getUnitVisitation",
        args = list(units = c("ROMO", "ZION"), startYear = 2015, endYear = 2020),
        needs = "internet",
        downloads = "visitation from the NPS STATS API (irmaservices.nps.gov)"),
-  list(id = "getUnitVisitation_allStats",
-       fun = "getUnitVisitation",
+  list(id = "get_unit_visitation_all_stats",
+       fun = "get_unit_visitation",
+       old_fun = "getUnitVisitation",
        args = list(units = c("ROMO", "ZION"), startYear = 2015, endYear = 2020,
                    allStats = TRUE),
        needs = "internet",
@@ -66,11 +72,16 @@ local({
   for (case in golden_cases) {
     id <- if (is.character(case$id) && length(case$id) == 1) case$id else "?"
     bad <- function(...) stop("golden case ", id, ": ", ..., call. = FALSE)
-    extra <- setdiff(names(case), c("id", "fun", "args", "needs", "downloads"))
+    extra <- setdiff(names(case),
+                     c("id", "fun", "old_fun", "args", "needs", "downloads"))
     if (length(extra) > 0) bad("unknown field(s) ", toString(extra))
     if (id == "?") bad("`id` must be one string")
     if (!is.character(case$fun) || length(case$fun) != 1) {
       bad("`fun` must be one function name")
+    }
+    if (!is.null(case$old_fun) &&
+        !(is.character(case$old_fun) && length(case$old_fun) == 1)) {
+      bad("`old_fun` must be one function name")
     }
     if (!is.list(case$args)) bad("`args` must be a list")
     if (!is.null(case$needs) && !all(case$needs %in% c("data", "internet"))) {

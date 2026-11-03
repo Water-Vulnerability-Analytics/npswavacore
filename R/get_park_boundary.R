@@ -1,7 +1,7 @@
 #' @title Get the boundaries of selected NPS units
 #'
 #' @description
-#' Downloads the boundaries of all NPS units with [getParkSystem()], keeps the
+#' Downloads the boundaries of all NPS units with [get_park_system()], keeps the
 #' units in `park`, and merges each unit into a single (multi)polygon.
 #' Optionally saves one shapefile per unit. Needs internet.
 #'
@@ -30,18 +30,19 @@
 #'   `UNIT_CODE`, `REGION`, `STATE`, `UNIT_NAME`, `PARKNAME` and `geometry`,
 #'   grouped by all of them except `geometry`.
 #' @export
-#' @seealso [getParkSystem()] for every unit.
+#' @seealso [get_park_system()] for every unit.
 #' @examplesIf interactive()
-#' bounds <- getParkBoundary(c("ROMO", "GRCA"))
+#' bounds <- get_park_boundary(c("ROMO", "GRCA"))
 #' plot(sf::st_geometry(bounds))
 #'
 #' # Also save one shapefile per park in tempdir()
-#' bounds <- getParkBoundary("ROMO", save = TRUE, path = paste0(tempdir(), "/"))
+#' bounds <- get_park_boundary("ROMO", save = TRUE,
+#'                             path = paste0(tempdir(), "/"))
 #' list.files(file.path(tempdir(), "ROMO"))
 
-getParkBoundary <- function(park, save = FALSE, path = NULL){
+get_park_boundary <- function(park, save = FALSE, path = NULL){
   
-  parks <- getParkSystem()
+  parks <- get_park_system()
   
   park_boundary <- parks %>% 
     sf::st_make_valid() %>%

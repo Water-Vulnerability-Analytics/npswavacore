@@ -29,17 +29,17 @@
 #'   with columns such as `UNIT_CODE`, `UNIT_NAME`, `UNIT_TYPE`, `STATE` and
 #'   `REGION`.
 #' @export
-#' @seealso [getParkBoundary()] for selected units only; [get_wsd()], which
+#' @seealso [get_park_boundary()] for selected units only; [get_wsd()], which
 #'   uses these boundaries to fill in missing coordinates.
 #' @examplesIf interactive()
-#' parks <- getParkSystem()
+#' parks <- get_park_system()
 #' parks[parks$UNIT_TYPE == "National Park", c("UNIT_CODE", "UNIT_NAME")]
 #'
 #' # Also save a copy as a GeoPackage
-#' parks <- getParkSystem(save = TRUE, path = tempdir())
+#' parks <- get_park_system(save = TRUE, path = tempdir())
 #' list.files(tempdir(), pattern = "gpkg$")
 
-getParkSystem <- function(save = FALSE, path = NULL){
+get_park_system <- function(save = FALSE, path = NULL){
   
 
   downloadLink <-  "https://irma.nps.gov/DataStore/DownloadFile/733895"
