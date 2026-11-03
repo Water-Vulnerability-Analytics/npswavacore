@@ -1,8 +1,10 @@
-# wavacore
+# npswavacore
 
 Shared building blocks for the Water Vulnerability Analytics (WaVA) water
 supply vulnerability assessments of National Park Service (NPS) units. Both the
 rapid (nationwide) and deep-dive assessments use these functions.
+
+This package was called `wavacore` until November 2026.
 
 | Function | What it does |
 | --- | --- |
@@ -15,7 +17,7 @@ rapid (nationwide) and deep-dive assessments use these functions.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("Water-Vulnerability-Analytics/wavacore")
+remotes::install_github("Water-Vulnerability-Analytics/npswavacore")
 ```
 
 ## Data

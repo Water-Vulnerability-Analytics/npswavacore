@@ -1,12 +1,12 @@
 # Cases for the golden comparison between the old code in
-# nps_water_vulnerability (before the split) and wavacore.
+# nps_water_vulnerability (before the split) and npswavacore.
 #
 # Used by make_golden.R, which writes golden/<id>.rds from the old code, and by
-# test-golden.R, which checks that wavacore returns the identical object.
-# `fun`: the wavacore function. `old_fun`: its name in the old code, if it was
-#   renamed (snake case); make_golden.R calls that one.
+# test-golden.R, which checks that npswavacore returns the identical object.
+# `fun`: the npswavacore function. `old_fun`: its name in the old code, if it
+#   was renamed (snake case); make_golden.R calls that one.
 # `args` must work with both the old and the new function, so it can't use
-# arguments added in wavacore (such as get_wsd()'s `path`).
+# arguments added in npswavacore (such as get_wsd()'s `path`).
 # `needs`: "data" = the shared WaVA data folder, "internet" = a live download.
 # `downloads`: what an "internet" case fetches, named in its skip reason.
 

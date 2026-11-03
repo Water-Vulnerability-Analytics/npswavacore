@@ -1,14 +1,15 @@
 # Write the golden files for test-golden.R from the OLD code in
 # nps_water_vulnerability, as it was before the split.
 #
-# Run from the wavacore repo root, in a fresh R session (not with wavacore
+# Run from the npswavacore repo root, in a fresh R session (not with npswavacore
 # loaded):
 #   Rscript tests/testthat/fixtures/make_golden.R ../nps_water_vulnerability
 #
 # The baseline is pinned to one commit, `golden_commit` below: upstream/main of
-# nps_water_vulnerability when wavacore was split out (2026-10-20). The golden
-# files always come from that commit, whatever the playground clone is on, so
-# later changes to the playground don't move the baseline. The script extracts
+# nps_water_vulnerability when npswavacore (then wavacore) was split out
+# (2026-10-20). The golden files always come from that commit, whatever the
+# playground clone is on, so later changes to the playground don't move the
+# baseline. The script extracts
 # that commit's setup.R and src/ into a temporary folder (`git archive`; the
 # clone itself is not touched), links the playground's `data` folder into it,
 # sources setup.R there as the old workflow did (about 70 packages plus every
@@ -37,8 +38,8 @@ fixtures <- normalizePath(file.path("tests", "testthat", "fixtures"),
                           mustWork = TRUE)
 golden_dir <- file.path(fixtures, "golden")
 
-if ("wavacore" %in% loadedNamespaces()) {
-  stop("wavacore is loaded; run this in a fresh R session")
+if ("npswavacore" %in% loadedNamespaces()) {
+  stop("npswavacore is loaded; run this in a fresh R session")
 }
 if (!dir.exists(file.path(old_repo, "data"))) {
   stop("no data folder or link in ", old_repo)

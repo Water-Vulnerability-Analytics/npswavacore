@@ -12,8 +12,8 @@ does not check that the folder exists.
 }
 \description{
 Returns the folder that holds the shared WaVA data (the \code{data} folder in the
-OneDrive shared library). Functions in \code{wavacore}, \code{wavarapid},
-\code{wavadeepdive} and \code{npswbm} build their default file paths from it, through
+OneDrive shared library). Functions in \code{npswavacore}, \code{wavarapid},
+\code{npswava} and \code{npswbm} build their default file paths from it, through
 \code{\link[=wava_data_path]{wava_data_path()}}.
 
 Looks for the folder in this order:

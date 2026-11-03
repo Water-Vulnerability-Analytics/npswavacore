@@ -1,4 +1,4 @@
-Package: wavacore
+Package: npswavacore
 Title: Shared Building Blocks for Water Vulnerability Analytics
 Version: 0.1.0
 Authors@R: c(
@@ -19,8 +19,8 @@ Description: Functions shared by the rapid and deep-dive water supply
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/Water-Vulnerability-Analytics/wavacore
-BugReports: https://github.com/Water-Vulnerability-Analytics/wavacore/issues
+URL: https://github.com/Water-Vulnerability-Analytics/npswavacore
+BugReports: https://github.com/Water-Vulnerability-Analytics/npswavacore/issues
 Imports: 
     curl,
     dplyr,
