@@ -34,21 +34,22 @@
 #'   they are `UnitCode`, `Year`, `Month` and one column per statistic (e.g.
 #'   `RecreationVisitors`, `TotalVisitors`, `TotalOvernightStays`).
 #' @export
-#' @seealso [getParkSystem()] to look up unit codes (`UNIT_CODE`).
+#' @seealso [get_park_system()] to look up unit codes (`UNIT_CODE`).
 #' @examplesIf curl::has_internet()
 #' # Monthly visitation for two parks in 2023
-#' getUnitVisitation(c("ROMO", "GRCA"), startYear = 2023, endYear = 2023)
+#' get_unit_visitation(c("ROMO", "GRCA"), startYear = 2023, endYear = 2023)
 #'
 #' # Summer months only
-#' getUnitVisitation("ROMO", startMonth = 6, startYear = 2023,
+#' get_unit_visitation("ROMO", startMonth = 6, startYear = 2023,
 #'                   endMonth = 8, endYear = 2023)
 #'
 #' # Every statistic, from the full dataset (slower)
 #' if (interactive()) {
-#'   getUnitVisitation("ROMO", startYear = 2023, endYear = 2023, allStats = TRUE)
+#'   get_unit_visitation("ROMO", startYear = 2023, endYear = 2023,
+#'                       allStats = TRUE)
 #' }
 
-getUnitVisitation <- function(units,
+get_unit_visitation <- function(units,
                               startMonth = 1,
                               startYear,
                               endMonth = 12,

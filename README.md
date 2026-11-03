@@ -1,21 +1,23 @@
-# wavacore
+# npswavacore
 
 Shared building blocks for the Water Vulnerability Analytics (WaVA) water
 supply vulnerability assessments of National Park Service (NPS) units. Both the
 rapid (nationwide) and deep-dive assessments use these functions.
 
+This package was called `wavacore` until November 2026.
+
 | Function | What it does |
 | --- | --- |
 | `get_wsd()` | Loads and cleans the NPS water supply database, with optional filters by park and geography |
-| `getParkSystem()` | Downloads the NPS park boundary shapefile |
-| `getParkBoundary()` | Gets the boundary of one or more park units |
-| `getUnitVisitation()` | Gets monthly visitation statistics for park units |
+| `get_park_system()` | Downloads the NPS park boundary shapefile |
+| `get_park_boundary()` | Gets the boundary of one or more park units |
+| `get_unit_visitation()` | Gets monthly visitation statistics for park units |
 
 ## Install
 
 ```r
 # install.packages("remotes")
-remotes::install_github("Water-Vulnerability-Analytics/wavacore")
+remotes::install_github("Water-Vulnerability-Analytics/npswavacore")
 ```
 
 ## Data

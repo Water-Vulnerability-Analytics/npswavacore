@@ -2,8 +2,8 @@
 #'
 #' @description
 #' Returns the folder that holds the shared WaVA data (the `data` folder in the
-#' OneDrive shared library). Functions in `wavacore`, `wavarapid`,
-#' `wavadeepdive` and `npswbm` build their default file paths from it, through
+#' OneDrive shared library). Functions in `npswavacore`, `wavarapid`,
+#' `npswava` and `npswbm` build their default file paths from it, through
 #' [wava_data_path()].
 #'
 #' Looks for the folder in this order:

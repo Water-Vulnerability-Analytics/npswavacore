@@ -1,8 +1,9 @@
-# Compare wavacore with golden outputs saved from the old code in
+# Compare npswavacore with golden outputs saved from the old code in
 # nps_water_vulnerability at the pinned commit b62f366, the playground when
-# wavacore was split out (see fixtures/README.md). A failure means wavacore no
-# longer returns exactly what the old code did. Report it; don't regenerate the
-# golden file or loosen the comparison to make it pass.
+# npswavacore (then wavacore) was split out (see fixtures/README.md). A failure
+# means npswavacore no longer returns exactly what the old code did. Report
+# it; don't regenerate the golden file or loosen the comparison to make it
+# pass.
 #
 # Every skip names the case and what is missing. A service that is down is not
 # a skip: its error is reported as is. A failure also says what else has
@@ -25,7 +26,7 @@ data_folder_reason <- function(id) {
          wava_data_dir(), "\" (", data_dir_source(), ")")
 }
 
-# What has changed since the golden files were made, other than wavacore: R,
+# What has changed since the golden files were made, other than npswavacore: R,
 # package versions and the shared data files, against golden_env.csv. Returns
 # one line per change, named by its item ("R", "package" or "data file"), or
 # NULL without golden_env.csv. Shown only when a case fails, to point at the

@@ -26,8 +26,8 @@ Ignored when \code{rapid = TRUE}, which always uses \code{TRUE}. Default: \code{
 \item{fill_empty_coords}{Logical. Whether to fill in coordinates for sources
 that have no longitude or latitude in the database.
 \itemize{
-\item \code{TRUE}: downloads the NPS unit boundaries (\code{\link[=getParkSystem]{getParkSystem()}}) and the US
-state boundaries, so it needs internet and takes longer. Each source
+\item \code{TRUE}: downloads the NPS unit boundaries (\code{\link[=get_park_system]{get_park_system()}}) and the
+US state boundaries, so it needs internet and takes longer. Each source
 with missing coordinates gets a point inside its park unit. For a unit
 made of separate pieces, the point is in the piece in the source's
 state (or the park's state when \code{source_state} is empty); if several
@@ -113,6 +113,6 @@ if (interactive()) {
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link[=getParkSystem]{getParkSystem()}}, which supplies the park boundaries used to fill
+\code{\link[=get_park_system]{get_park_system()}}, which supplies the park boundaries used to fill
 in coordinates; \code{\link[=wava_data_path]{wava_data_path()}} for the default \code{path}.
 }
