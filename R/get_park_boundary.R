@@ -44,10 +44,10 @@ get_park_boundary <- function(park, save = FALSE, path = NULL){
   
   parks <- get_park_system()
   
-  park_boundary <- parks %>% 
-    sf::st_make_valid() %>%
-    dplyr::filter(UNIT_CODE %in% park) %>%
-    dplyr::group_by(UNIT_CODE,REGION,STATE,UNIT_NAME,PARKNAME) %>%
+  park_boundary <- parks |> 
+    sf::st_make_valid() |>
+    dplyr::filter(UNIT_CODE %in% park) |>
+    dplyr::group_by(UNIT_CODE,REGION,STATE,UNIT_NAME,PARKNAME) |>
     dplyr::summarize(.groups = "keep")
   
   if(save == TRUE){
