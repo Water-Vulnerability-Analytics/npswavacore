@@ -91,10 +91,10 @@ get_unit_visitation <- function(units,
                            show_col_types = FALSE)
     
     # filter to requested units and dates
-    final_df <- dat %>%
+    final_df <- dat |>
       dplyr::filter(UnitCode %in% units,
                     Year > startYear | (Year == startYear & Month >= startMonth),
-                    Year < endYear | (Year == endYear & Month <= endMonth)) %>%
+                    Year < endYear | (Year == endYear & Month <= endMonth)) |>
       dplyr::mutate(Statistic = dplyr::recode(Statistic,
                                               "TRV"   = "RecreationVisitors",
                                               "TNRV"  = "NonRecreationVisitors",
@@ -110,7 +110,7 @@ get_unit_visitation <- function(units,
                                               "BC"    = "BackcountryCampers",
                                               "MISC"  = "MiscellaneousOvernightStays",
                                               "NROS"  = "NonRecreationOvernightStays",
-                                              "TOS"   = "TotalOvernightStays")) %>%
+                                              "TOS"   = "TotalOvernightStays")) |>
       tidyr::pivot_wider(names_from = Statistic,
                   values_from = Value)
     

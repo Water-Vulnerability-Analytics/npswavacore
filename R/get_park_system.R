@@ -51,7 +51,7 @@ get_park_system <- function(save = FALSE, path = NULL){
   utils::unzip(temp1, exdir = temp2)
   
   
-  parks <- sf::st_read(paste0(temp2, "/nps_boundary.shp")) %>%
+  parks <- sf::st_read(paste0(temp2, "/nps_boundary.shp")) |>
     sf::st_make_valid()
   
   # Optionally save the data

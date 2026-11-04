@@ -110,13 +110,13 @@ get_wsd <- function(conus = TRUE,
   WSD_raw <- readxl::read_excel(table_path, 
                                 sheet = 1, 
                                 na = c("NA", "U"), 
-                                skip = 1) %>%
-    janitor::clean_names() %>%
+                                skip = 1) |>
+    janitor::clean_names() |>
     dplyr::mutate(source_longitude = as.numeric(source_longitude),
                   source_latitude = as.numeric(source_latitude))
   
   if (rapid == TRUE) {
-    WSD_raw <- WSD_raw %>%
+    WSD_raw <- WSD_raw |>
       # Filter to CONUS & NPS-Operated Systems only
       dplyr::filter(!stringr::str_detect(source_type, 
                                          stringr::regex("municipal|hauled|tribal|purchased",
@@ -132,12 +132,12 @@ get_wsd <- function(conus = TRUE,
     } else {
       parks <- get_park_system()
       
-      WSD_raw <- WSD_raw %>% 
+      WSD_raw <- WSD_raw |> 
         dplyr::mutate(coords_flag = ifelse(is.na(source_longitude) | is.na(source_latitude),
                                            "Centroid", "Source Coordinates"))
       
       # filter missing coords to only join those 
-      WSD_missing <- WSD_raw %>% 
+      WSD_missing <- WSD_raw |> 
         dplyr::filter(coords_flag == "Centroid")
       
       # nothing missing, nothing to fill
@@ -148,9 +148,9 @@ get_wsd <- function(conus = TRUE,
       } else {
         
         # get associated park centroid and join...
-        units_poly <- parks %>% 
-          dplyr::filter(UNIT_CODE %in% WSD_missing$park_unit) %>% 
-          sf::st_cast("POLYGON") %>% 
+        units_poly <- parks |> 
+          dplyr::filter(UNIT_CODE %in% WSD_missing$park_unit) |> 
+          sf::st_cast("POLYGON") |> 
           sf::st_transform(5070)   # convert to meters projection
         
         # missing coords exist, but none matched a park polygon
@@ -161,10 +161,10 @@ get_wsd <- function(conus = TRUE,
         } else {
           
           # group by park and "split"
-          exploded <- units_poly %>% 
+          exploded <- units_poly |> 
             dplyr::group_split(UNIT_CODE)
           
-          clustered <- exploded %>%
+          clustered <- exploded |>
             purrr::map_dfr(function(p) {
               # If a park only has 1 polygon, don't waste time on it
               if(nrow(p) <= 1) {
@@ -183,40 +183,40 @@ get_wsd <- function(conus = TRUE,
             })
           
           # within each cluster (per park)
-          units_clustered <- clustered %>% 
-            dplyr::group_by(UNIT_CODE, cluster_id) %>% 
-            dplyr::summarize(do_union = TRUE, .groups = "drop") %>% 
-            sf::st_cast("MULTIPOLYGON") %>% 
-            # st_transform(st_crs(get_park_system())) %>%
-            dplyr::mutate(cluster_id = as.character(cluster_id)) %>%
-            sf::st_join(., tigris::states() %>% sf::st_transform(sf::st_crs(clustered)) %>% dplyr::select(STUSPS), left = TRUE) %>%
-            sf::st_point_on_surface() %>%
+          units_clustered <- clustered |> 
+            dplyr::group_by(UNIT_CODE, cluster_id) |> 
+            dplyr::summarize(do_union = TRUE, .groups = "drop") |> 
+            sf::st_cast("MULTIPOLYGON") |> 
+            # st_transform(st_crs(get_park_system())) |>
+            dplyr::mutate(cluster_id = as.character(cluster_id)) |>
+            sf::st_join(tigris::states() |> sf::st_transform(sf::st_crs(clustered)) |> dplyr::select(STUSPS), left = TRUE) |>
+            sf::st_point_on_surface() |>
             sf::st_transform(4326)
           
-          WSD_missing_1 <- WSD_missing %>%
-            dplyr::filter(!is.na(source_state)) %>%
+          WSD_missing_1 <- WSD_missing |>
+            dplyr::filter(!is.na(source_state)) |>
             dplyr::left_join(units_clustered, by = c("park_unit" = "UNIT_CODE", "source_state" = "STUSPS")) 
           
-          WSD_missing_2 <- WSD_missing %>%
-            dplyr::filter(is.na(source_state)) %>%
+          WSD_missing_2 <- WSD_missing |>
+            dplyr::filter(is.na(source_state)) |>
             dplyr::left_join(units_clustered, by = c("park_unit" = "UNIT_CODE", "state" = "STUSPS")) 
           
           # Sites with so not enough information to discern which of the units it should be assigned to...
-          # test <- bind_rows(WSD_missing_1, WSD_missing_2) %>%
-          #   group_by(wsd_source_id) %>%
-          #   mutate(count = n()) %>%
+          # test <- bind_rows(WSD_missing_1, WSD_missing_2) |>
+          #   group_by(wsd_source_id) |>
+          #   mutate(count = n()) |>
           #   filter(count > 1)
           
-          WSD_missing_complete <- dplyr::bind_rows(WSD_missing_1, WSD_missing_2) %>%
-            dplyr::distinct(wsd_source_id, .keep_all = TRUE) %>%
+          WSD_missing_complete <- dplyr::bind_rows(WSD_missing_1, WSD_missing_2) |>
+            dplyr::distinct(wsd_source_id, .keep_all = TRUE) |>
             dplyr::mutate(source_longitude = sf::st_coordinates(geometry)[, 1],
-                          source_latitude = sf::st_coordinates(geometry)[, 2]) %>%
-            sf::st_drop_geometry() %>%
+                          source_latitude = sf::st_coordinates(geometry)[, 2]) |>
+            sf::st_drop_geometry() |>
             dplyr::select(-c(geometry, cluster_id))
           
           # join to rows that had coords
-          WSD_raw <- WSD_raw %>%
-            dplyr::filter(coords_flag == "Source Coordinates") %>% 
+          WSD_raw <- WSD_raw |>
+            dplyr::filter(coords_flag == "Source Coordinates") |> 
             dplyr::bind_rows(WSD_missing_complete)
           
         }
@@ -229,20 +229,20 @@ get_wsd <- function(conus = TRUE,
   WSD <- WSD_raw
   
   if (!is.null(park)) {
-    WSD <- WSD %>% dplyr::filter(park_unit %in% park)
+    WSD <- WSD |> dplyr::filter(park_unit %in% park)
   }
   
   if (conus) {
     # Territories/Oconus filters
-    WSD <- WSD %>% 
+    WSD <- WSD |> 
       dplyr::filter(!state %in% c("AK", "AS", "HI", "MP", "PR", "VI", "GU")) 
   }
   
   # --- Return as Spatial or Flat ---
   if (sf) {
     # Final check: remove records that still have no coords after filling
-    WSD <- WSD %>%
-      tidyr::drop_na(source_longitude, source_latitude) %>%
+    WSD <- WSD |>
+      tidyr::drop_na(source_longitude, source_latitude) |>
       sf::st_as_sf(coords = c("source_longitude", "source_latitude"),
                    crs = 4326,
                    remove = FALSE)
