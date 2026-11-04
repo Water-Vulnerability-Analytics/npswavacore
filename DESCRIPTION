@@ -22,7 +22,7 @@ Roxygen: list(markdown = TRUE)
 URL: https://github.com/Water-Vulnerability-Analytics/npswavacore
 BugReports: https://github.com/Water-Vulnerability-Analytics/npswavacore/issues
 Depends:
-    R (>= 4.1.0)
+    R (>= 4.3.0)
 Imports:
     curl,
     dplyr,
